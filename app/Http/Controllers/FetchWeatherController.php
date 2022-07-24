@@ -24,6 +24,7 @@ class FetchWeatherController extends Controller
         $weather = Weather::where('date',$date->toDateString())->first();
         if($weather) return response()->json(['data'=>$weather]);
         $weather_data = UtilityWeather::fetchWeather($date);
+        if(count($weather_data)==0) return response()->json(['data'=>'Not Found',404]);
         $weather_data['date'] = $date->toDateString();
         $new_weather = Weather::create($weather_data);
         return response()->json(['data'=>$new_weather]);
