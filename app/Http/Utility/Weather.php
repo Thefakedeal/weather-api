@@ -2,7 +2,9 @@
 
 namespace App\Http\Utility;
 
+use App\Providers\WeatherApiFetched;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
@@ -20,7 +22,7 @@ class Weather
         $response = Http::withHeaders([
             'Authorization' => config('services.weather_api.key'),
         ])->get(config('services.weather_api.url'), $query);
-
+        WeatherApiFetched::dispatch();
         return $response;
     }
 
@@ -54,6 +56,8 @@ class Weather
                 $weathers[$key] = $response->object()->hours;
             }
         }
+
+
         return $weathers;
     }
 }
