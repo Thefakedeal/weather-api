@@ -50,7 +50,9 @@ class Weather
         $weathers = [];
         foreach ($places as $key => $value) {
             $response = Weather::getWeather($dateTime,$value['lat'],$value['lng']);
-            $weathers[$key] = $response->object()->hours;
+            if($response->ok()){
+                $weathers[$key] = $response->object()->hours;
+            }
         }
         return $weathers;
     }
